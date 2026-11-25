@@ -187,6 +187,18 @@ export function slugifyThemeId(name: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+/** Built-in themes people can always come back to: they cannot be removed from the picker. */
+export const PROTECTED_PRESET_IDS = ['light', 'dark']
+
+export function isProtectedPreset(preset: Pick<ResolvedPreset, 'id' | 'custom'>): boolean {
+  return !preset.custom && PROTECTED_PRESET_IDS.includes(preset.id)
+}
+
+/** Presets to show in the picker: everything except removed themes, but never Claro/Escuro. */
+export function visiblePresets(presets: ResolvedPreset[], hidden: string[] = []): ResolvedPreset[] {
+  return presets.filter((preset) => isProtectedPreset(preset) || !hidden.includes(preset.id))
+}
+
 /** Id of the preset whose colors match the draft, 'auto' for an empty draft, else ''. */
 export function presetIdForColors(presets: ResolvedPreset[], colors: Record<string, string>): string {
   if (Object.keys(colors).length === 0) return 'auto'

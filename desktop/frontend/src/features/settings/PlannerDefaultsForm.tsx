@@ -37,7 +37,7 @@ export default function PlannerDefaultsForm({
   const builtins = builtinPlannerAnchors()
 
   return (
-    <Card title={t('settings.planner.title')} intro={t('settings.planner.intro')}>
+    <Card collapsible title={t('settings.planner.title')} intro={t('settings.planner.intro')}>
       <form
         className="form-stack"
         onSubmit={(event) => {

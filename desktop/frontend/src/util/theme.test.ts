@@ -10,6 +10,7 @@ import {
   resolveEffectiveColors,
   resolvePresets,
   slugifyThemeId,
+  visiblePresets,
 } from './theme'
 
 const midnight = {
@@ -137,5 +138,22 @@ describe('applyTheme color scheme', () => {
 
     applyTheme(null)
     expect(root.dataset.scheme).toBeUndefined()
+  })
+})
+
+describe('visiblePresets', () => {
+  it('drops hidden themes but always keeps Claro and Escuro', () => {
+    const ids = (hidden: string[]) =>
+      visiblePresets(resolvePresets({ midnight }), hidden).map((preset) => preset.id)
+
+    expect(ids([])).toEqual(['auto', 'light', 'dark', 'warm', 'midnight'])
+    expect(ids(['auto', 'warm', 'midnight'])).toEqual(['light', 'dark'])
+    expect(ids(['light', 'dark'])).toEqual(['auto', 'light', 'dark', 'warm', 'midnight'])
+  })
+
+  it('does not protect a user theme that reuses a built-in id', () => {
+    const presets = resolvePresets({ dark: { label: 'Meia-noite', colors: { bg: '#000000' } } })
+
+    expect(visiblePresets(presets, ['dark']).map((preset) => preset.id)).not.toContain('dark')
   })
 })

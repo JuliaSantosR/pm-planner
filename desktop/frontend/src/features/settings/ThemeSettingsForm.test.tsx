@@ -123,19 +123,28 @@ describe('ThemeSettingsForm', () => {
     expect(onSelectPreset).toHaveBeenCalledWith('light')
   })
 
-  it('offers a delete button on every preset, built-in ones included', () => {
+  it('offers a delete button on built-in presets, except Claro and Escuro', () => {
     const { onDeletePreset } = render()
 
     const removes = [...container.querySelectorAll<HTMLButtonElement>('.theme-preset-delete')]
     expect(removes.map((node) => node.getAttribute('aria-label'))).toEqual([
       'Excluir tema Automático',
-      'Excluir tema Claro',
-      'Excluir tema Escuro',
       'Excluir tema Areia',
     ])
     act(() => removes[1].click())
 
-    expect(onDeletePreset).toHaveBeenCalledWith('light')
+    expect(onDeletePreset).toHaveBeenCalledWith('warm')
+  })
+
+  it('keeps Claro and Escuro in the picker without a delete button', () => {
+    render()
+
+    const chips = [...container.querySelectorAll('.theme-preset-wrap')]
+    for (const name of ['Claro', 'Escuro']) {
+      const chip = chips.find((node) => node.textContent?.includes(name))
+      expect(chip, name).toBeTruthy()
+      expect(chip!.querySelector('.theme-preset-delete')).toBeNull()
+    }
   })
 
   it('marks the selected preset and shows user presets with a delete button', () => {

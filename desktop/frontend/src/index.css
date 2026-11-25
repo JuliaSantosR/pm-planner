@@ -845,7 +845,7 @@ input[readonly] {
   border: 1px solid transparent;
   border-radius: var(--radius);
   overflow-wrap: anywhere;
-  box-shadow: 0 14px 36px color-mix(in srgb, var(--text) 18%, transparent);
+  box-shadow: var(--toast-shadow, 0 10px 24px -10px color-mix(in srgb, var(--text) 28%, transparent));
   font-size: 0.93rem;
 }
 
@@ -2107,6 +2107,7 @@ input[readonly] {
   --action-glow-hover: 0 4px 12px -2px rgb(0 0 0 / 0.4);
   --action-glow-active: 0 1px 3px rgb(0 0 0 / 0.35);
   --brand-glow: 0 2px 8px -3px rgb(0 0 0 / 0.4);
+  --toast-shadow: 0 6px 16px -8px rgb(0 0 0 / 0.55);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2116,6 +2117,7 @@ input[readonly] {
     --action-glow-hover: 0 4px 12px -2px rgb(0 0 0 / 0.4);
     --action-glow-active: 0 1px 3px rgb(0 0 0 / 0.35);
     --brand-glow: 0 2px 8px -3px rgb(0 0 0 / 0.4);
+    --toast-shadow: 0 6px 16px -8px rgb(0 0 0 / 0.55);
   }
 }
 
@@ -2391,19 +2393,14 @@ input[readonly] {
     margin-top: 0.75rem;
   }
 
-  /* Summary: calm rows, with the total set apart by a firmer rule and weight. */
+  /* Summary: every row has the same light rule; only the one under Total is firmer. */
   .stat {
     padding: 0.55rem 0;
     border-bottom-color: color-mix(in srgb, var(--border) 60%, transparent);
   }
 
   .stat.emphasis {
-    border-top: 1px solid var(--border-strong);
-  }
-
-  /* The row above Total drops its light rule, so only the firmer one shows. */
-  .stat:has(+ .stat.emphasis) {
-    border-bottom: 0;
+    border-bottom-color: var(--border-strong);
   }
 
   .stat.emphasis .stat-label {
@@ -2529,4 +2526,81 @@ input[readonly] {
 .summary-callout[data-tone="neutral"] {
   color: var(--muted);
   background: color-mix(in srgb, var(--panel-soft) 70%, transparent);
+}
+
+/* Collapsible settings sections: just a title and a chevron until opened. */
+.card.collapsible {
+  padding-block: 0;
+}
+
+.card-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.25rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  border-radius: var(--radius-lg);
+}
+
+.card-summary::-webkit-details-marker {
+  display: none;
+}
+
+.card-summary .card-title {
+  margin: 0;
+}
+
+.card-summary:hover .card-title {
+  color: var(--text);
+}
+
+.card-summary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+.card-chevron {
+  flex: none;
+  color: var(--muted);
+  transition: transform 180ms ease;
+}
+
+.card.collapsible[open] .card-chevron {
+  transform: rotate(180deg);
+}
+
+.card-body {
+  padding-bottom: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-chevron {
+    transition: none;
+  }
+}
+
+/* Updates: the restart warning as a quiet note. No box, so its text and icon sit on the same
+   left edge as the intro above and the button below; the button gets room to breathe. */
+.update-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.update-note-icon {
+  flex: none;
+  margin-top: 0.14rem;
+  color: var(--accent-strong);
+}
+
+.update-note + .btn-row {
+  margin-top: 1.25rem;
 }

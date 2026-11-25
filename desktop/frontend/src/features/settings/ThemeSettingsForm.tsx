@@ -4,6 +4,7 @@ import { Button, Card } from '../../components/ui'
 import {
   contrastRatio,
   isHex,
+  isProtectedPreset,
   PRESETS,
   slugifyThemeId,
   THEME_KEYS,
@@ -107,7 +108,7 @@ export default function ThemeSettingsForm({
   const dark = builtinColors('dark')
 
   return (
-    <Card title={t('settings.theme.title')} intro={t('settings.theme.intro')}>
+    <Card collapsible title={t('settings.theme.title')} intro={t('settings.theme.intro')}>
       <form
         className="form-stack"
         onSubmit={(event) => {
@@ -143,15 +144,17 @@ export default function ThemeSettingsForm({
                   </span>
                   {label}
                 </button>
-                <button
-                  type="button"
-                  className="theme-preset-delete"
-                  aria-label={t('settings.theme.deletePreset', { name: label })}
-                  disabled={busy}
-                  onClick={() => { setTyped({}); onDeletePreset(preset.id) }}
-                >
-                  ×
-                </button>
+                {isProtectedPreset(preset) ? null : (
+                  <button
+                    type="button"
+                    className="theme-preset-delete"
+                    aria-label={t('settings.theme.deletePreset', { name: label })}
+                    disabled={busy}
+                    onClick={() => { setTyped({}); onDeletePreset(preset.id) }}
+                  >
+                    ×
+                  </button>
+                )}
               </span>
             )
           })}
