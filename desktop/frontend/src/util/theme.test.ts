@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   PRESETS,
   THEME_KEYS,
+  applyTheme,
   buildThemeVars,
   contrastRatio,
   isHex,
@@ -121,5 +122,20 @@ describe('theme presets', () => {
     expect(presetIdForColors(presets, { ...light })).toBe('light')
     expect(presetIdForColors(presets, { ...light, accent: '#ABCDEF' })).toBe('')
     expect(presetIdForColors(presets, { accent: '#ff8800' })).toBe('')
+  })
+})
+
+describe('applyTheme color scheme', () => {
+  it('tags the page as dark or light from the background, and clears it for Automático', () => {
+    const root = document.documentElement
+
+    applyTheme(midnight.colors)
+    expect(root.dataset.scheme).toBe('dark')
+
+    applyTheme(light)
+    expect(root.dataset.scheme).toBe('light')
+
+    applyTheme(null)
+    expect(root.dataset.scheme).toBeUndefined()
   })
 })

@@ -109,11 +109,14 @@ export function applyTheme(colors?: Record<string, string> | null): void {
   for (const [name, value] of Object.entries(vars)) root.style.setProperty(name, value)
 
   if (picks.bg) {
-    root.style.colorScheme = luminance(picks.bg) < 0.4 ? 'dark' : 'light'
+    const scheme = luminance(picks.bg) < 0.4 ? 'dark' : 'light'
+    root.style.colorScheme = scheme
+    // CSS reads this to pick shadows that suit the surface (see --card-shadow).
+    root.dataset.scheme = scheme
   } else {
     root.style.removeProperty('color-scheme')
+    delete root.dataset.scheme
   }
-
 }
 
 /** Cache the saved theme so the next launch paints it before config loads. */

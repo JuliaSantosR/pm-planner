@@ -633,7 +633,7 @@ input[readonly] {
   padding-inline: 2rem;
   border-radius: 999px;
   font-size: 1.1rem;
-  box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 28%, transparent);
+  box-shadow: var(--action-glow, 0 6px 16px color-mix(in srgb, var(--accent) 28%, transparent));
   transition:
     transform 220ms var(--ease),
     box-shadow 220ms var(--ease),
@@ -641,11 +641,11 @@ input[readonly] {
 }
 .clockin-action:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 34%, transparent);
+  box-shadow: var(--action-glow-hover, 0 10px 22px color-mix(in srgb, var(--accent) 34%, transparent));
 }
 .clockin-action:active:not(:disabled) {
   transform: translateY(1px) scale(0.98);
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: var(--action-glow-active, 0 2px 6px color-mix(in srgb, var(--accent) 30%, transparent));
   transition-duration: 80ms;
 }
 .clockin-action:disabled { opacity: 0.8; box-shadow: none; }
@@ -2099,6 +2099,26 @@ input[readonly] {
     0 14px 30px -18px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
+/* On dark surfaces a tinted shadow reads as a glowing halo, so use quiet neutral ones.
+   data-scheme is set by applyTheme for any theme; plain Automático follows the OS. */
+:root[data-scheme="dark"] {
+  --card-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 14px -12px rgb(0 0 0 / 0.45);
+  --action-glow: 0 2px 8px -2px rgb(0 0 0 / 0.35);
+  --action-glow-hover: 0 4px 12px -2px rgb(0 0 0 / 0.4);
+  --action-glow-active: 0 1px 3px rgb(0 0 0 / 0.35);
+  --brand-glow: 0 2px 8px -3px rgb(0 0 0 / 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-scheme]) {
+    --card-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 14px -12px rgb(0 0 0 / 0.45);
+    --action-glow: 0 2px 8px -2px rgb(0 0 0 / 0.35);
+    --action-glow-hover: 0 4px 12px -2px rgb(0 0 0 / 0.4);
+    --action-glow-active: 0 1px 3px rgb(0 0 0 / 0.35);
+    --brand-glow: 0 2px 8px -3px rgb(0 0 0 / 0.4);
+  }
+}
+
 .sidebar {
   padding-inline: 1.1rem;
   border-right-color: var(--card-border);
@@ -2106,7 +2126,7 @@ input[readonly] {
 
 .brand-mark {
   border-radius: 12px;
-  box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: var(--brand-glow, 0 6px 14px -6px color-mix(in srgb, var(--accent) 70%, transparent));
 }
 
 .nav {
