@@ -22,6 +22,7 @@ import { defaultReminderSettings, normalizeReminderSettings } from '../util/remi
 import { translateMessage } from '../i18n/translateMessage'
 import {
   applyTheme,
+  PRESETS,
   presetIdForColors,
   resolveEffectiveColors,
   resolvePresets,
@@ -55,6 +56,12 @@ export default function SettingsPage() {
   )
   const [themeDraft, setThemeDraft] = useState<Record<string, string>>({})
   const presets = useMemo(() => resolvePresets(config?.themes), [config?.themes])
+  const hiddenThemes = useMemo(() => config?.hidden_themes ?? [], [config?.hidden_themes])
+  // Removed themes stay resolvable by id; they only disappear from the picker.
+  const visiblePresets = useMemo(
+    () => presets.filter((preset) => !hiddenThemes.includes(preset.id)),
+    [presets, hiddenThemes],
+  )
   const selectedId = presetIdForColors(presets, themeDraft)
   const configRef = useRef(config)
   const [toast, setToast] = useState<SettingsToast | null>(null)
@@ -275,6 +282,7 @@ export default function SettingsPage() {
     if (!id) return
     void saveTheme({
       themes: { ...(config?.themes ?? {}), [id]: { label: name.trim(), colors } },
+      hidden_themes: hiddenThemes.filter((hidden) => hidden !== id),
       theme: {},
       theme_name: id,
     })
@@ -283,9 +291,11 @@ export default function SettingsPage() {
   const deletePreset = (id: string) => {
     const themes = { ...(config?.themes ?? {}) }
     delete themes[id]
+    // Built-ins live in code, so removing one means hiding it from the picker.
+    const hidden = PRESETS.some((preset) => preset.id === id) ? [...new Set([...hiddenThemes, id])] : hiddenThemes
     const selectedGone = config?.theme_name === id
     void saveTheme(
-      selectedGone ? { themes, theme_name: '' } : { themes },
+      selectedGone ? { themes, hidden_themes: hidden, theme_name: '' } : { themes, hidden_themes: hidden },
       selectedGone ? fallbackColors(themes) : undefined,
       'settings.theme.deleted',
     )
@@ -395,7 +405,7 @@ export default function SettingsPage() {
 
         <ThemeSettingsForm
           colors={themeDraft}
-          presets={presets}
+          presets={visiblePresets}
           selectedId={selectedId}
           busy={busy}
           onChange={previewTheme}

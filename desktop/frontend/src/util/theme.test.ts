@@ -50,7 +50,7 @@ describe('theme', () => {
 
   it('keeps presets valid and readable', () => {
     const ids = PRESETS.map((p) => p.id)
-    expect(ids).toEqual(['auto', 'light', 'dark', 'ocean', 'warm'])
+    expect(ids).toEqual(['auto', 'light', 'dark', 'warm'])
     expect(PRESETS[0].colors).toBeNull()
     for (const preset of PRESETS) {
       expect(preset.labelKey).toBe(`settings.theme.presets.${preset.id}`)
@@ -68,15 +68,15 @@ describe('theme', () => {
 describe('theme presets', () => {
   it('lists built-ins first, then user presets with labels', () => {
     const list = resolvePresets({ midnight })
-    expect(list.map((p) => p.id)).toEqual(['auto', 'light', 'dark', 'ocean', 'warm', 'midnight'])
+    expect(list.map((p) => p.id)).toEqual(['auto', 'light', 'dark', 'warm', 'midnight'])
     expect(list[1]).toMatchObject({ custom: false, labelKey: 'settings.theme.presets.light' })
-    expect(list[5]).toMatchObject({ custom: true, label: 'Meia-noite', colors: midnight.colors })
+    expect(list[4]).toMatchObject({ custom: true, label: 'Meia-noite', colors: midnight.colors })
     expect(resolvePresets(undefined)).toHaveLength(PRESETS.length)
   })
 
   it('replaces a built-in with the same id in place', () => {
     const list = resolvePresets({ dark: { label: 'Escuro', colors: { bg: '#123456' } } })
-    expect(list.map((p) => p.id)).toEqual(['auto', 'light', 'dark', 'ocean', 'warm'])
+    expect(list.map((p) => p.id)).toEqual(['auto', 'light', 'dark', 'warm'])
     expect(list[2]).toMatchObject({ id: 'dark', label: 'Escuro', custom: true })
     expect(list[2].labelKey).toBeUndefined()
   })

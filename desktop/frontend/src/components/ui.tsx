@@ -165,13 +165,15 @@ export function StatRow({
   label,
   value,
   accent = false,
+  emphasis = false,
 }: {
   label: string
   value: ReactNode
   accent?: boolean
+  emphasis?: boolean
 }) {
   return (
-    <div className={classNames('stat', accent && 'accent')}>
+    <div className={classNames('stat', accent && 'accent', emphasis && 'emphasis')}>
       <span className="stat-label">{label}</span>
       <span className="stat-value">{value}</span>
     </div>

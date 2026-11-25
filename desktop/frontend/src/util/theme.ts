@@ -49,14 +49,6 @@ export const PRESETS: ThemePreset[] = [
     },
   },
   {
-    id: 'ocean',
-    labelKey: 'settings.theme.presets.ocean',
-    colors: {
-      bg: '#0b1a2e', panel: '#12263d', text: '#e6f0fa', muted: '#9fb4cc', border: '#2a4262',
-      accent: '#4fc3f7', ok: '#6ee7a8', warning: '#fbbf24', danger: '#fca5a5',
-    },
-  },
-  {
     id: 'warm',
     labelKey: 'settings.theme.presets.warm',
     colors: {
