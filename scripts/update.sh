@@ -4,15 +4,15 @@
 
 set -euo pipefail
 
-readonly REPO_URL="https://github.com/ArturMinelli/pm-planner.git"
-readonly REPO_TARBALL_URL="https://github.com/ArturMinelli/pm-planner/archive/refs/heads/main.tar.gz"
+readonly REPO_URL="https://github.com/JuliaSantosR/pm-planner.git"
+readonly REPO_TARBALL_URL="https://github.com/JuliaSantosR/pm-planner/archive/refs/heads/main.tar.gz"
 case "$(uname -s)" in
 	Darwin) DEFAULT_INSTALL_DIR="$HOME/Library/Application Support/pm-planner" ;;
 	*)      DEFAULT_INSTALL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pm-planner" ;;
 esac
 readonly DEFAULT_INSTALL_DIR
 readonly LEGACY_INSTALL_DIR="$HOME/pm-planner"
-readonly SETUP_URL="https://raw.githubusercontent.com/ArturMinelli/pm-planner/main/scripts/setup.sh"
+readonly SETUP_URL="https://raw.githubusercontent.com/JuliaSantosR/pm-planner/main/scripts/setup.sh"
 
 daemon_was_running=false
 
@@ -39,7 +39,7 @@ Opções:
   --help          Exibe esta ajuda
 
 Exemplos:
-  curl -fsSL https://raw.githubusercontent.com/ArturMinelli/pm-planner/main/scripts/update.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/JuliaSantosR/pm-planner/main/scripts/update.sh | bash
   cd ~/.local/share/pm-planner && ./scripts/update.sh
   pm update      # equivalente, a partir da CLI
 EOF
